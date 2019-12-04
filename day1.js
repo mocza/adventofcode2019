@@ -12,18 +12,24 @@ function day1() {
         return reqFuel >= 0 ? this.fuelRequiredForMassPart2(reqFuel, sum+reqFuel) : sum;
     }
 
-    this.allFuelRequired = function(name, inputFileName, massCalcFunction) {
+}
+
+function executor(inputFile, calcObj) {
+
+    this.execute = function(name, calcFunction) {
         const fs = require('fs');
-        const input_lines = fs.readFileSync(inputFileName, 'utf8').toString().split("\n")
-        const sum = (input_lines) => input_lines.reduce( (acc, e) => acc + massCalcFunction.call(this, parseInt(e), 0), 0);
+        const input_lines = fs.readFileSync(inputFile, 'utf8').toString().split("\n")
+        const sum = (input_lines) => input_lines.reduce( (acc, elem) => acc + calcFunction.call(calcObj, parseInt(elem), 0), 0);
         console.log(`${name}: ${sum(input_lines)}`);
     }
 
 }
 
 const day1_ = new day1();
-day1_.allFuelRequired("part1", "./inputs/day1-input.txt", day1_.fuelRequiredForMassPart1);
-day1_.allFuelRequired("part2", "./inputs/day1-input.txt", day1_.fuelRequiredForMassPart2);
+const executor_ = new executor("./inputs/day1-input.txt", day1_);
+executor_.execute("part1", day1_.fuelRequiredForMassPart1);
+executor_.execute("part2", day1_.fuelRequiredForMassPart2);
+
 
 module.exports = day1;
 // export default fuelForMass;

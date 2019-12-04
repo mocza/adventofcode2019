@@ -4,15 +4,6 @@ var day1 = require('../day1');
 
 const day1_ = new day1();
 
-// describe('Array', function() {
-//   describe('#indexOf()', function() {
-//     it('should return -1 when the value is not present', function() {
-//       assert.equal([1, 2, 3].indexOf(4), -1);
-//     });
-//   });
-// });
-
-
 describe('fuelRequiredForMassPart1', function() {
     it('divisable by 3', function() {
         assert.equal(day1_.fuelRequiredForMassPart1(12), 2);

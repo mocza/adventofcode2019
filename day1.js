@@ -8,6 +8,12 @@ function day1() {
         return Math.floor(mass / 3) - 2;
     }
 
+    this.fuelRequiredForMassRecursive = function(mass, sum) {
+        let reqFuel = Math.floor(mass / 3) - 2;
+        // console.log(`sum: ${sum}, mass: ${mass}, reqFuel: ${reqFuel},`);
+        return reqFuel >= 0 ? this.fuelRequiredForMassRecursive(reqFuel, sum+reqFuel) : sum;
+    }
+
     this.allFuelRequired = function(inputFileName) {
         var sum = 0;
 
@@ -28,18 +34,19 @@ function day1() {
 
 }
 
+const execute = function () {
+    const day1_ = new day1();
+    const input_lines = fs.readFileSync('./inputs/day1-input.txt', 'utf8').toString().split("\n")
+    // const sum = (input_lines) => input_lines.reduce( (acc, e) => acc + parseInt(e), 0);
 
-const day1_ = new day1();
-const input_lines = fs.readFileSync('./inputs/day1-input.txt', 'utf8').toString().split("\n")
-const sum = (input_lines) => input_lines.reduce( (acc, e) => acc + parseInt(e), 0);
-
-let sum1 = 0;
-for(let line of input_lines) {
-    sum1 = sum1 + day1_.fuelRequiredForMass(line); 
-    // console.log(day1_.fuelRequiredForMass(line));
+    let sum = 0;
+    for(let line of input_lines) {
+        sum = sum + day1_.fuelRequiredForMassRecursive(line, 0); 
+    }
+    console.log(sum);
 }
-console.log(sum1);
 
+execute();
 
 module.exports = day1;
 // export default fuelForMass;

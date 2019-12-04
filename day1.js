@@ -14,39 +14,18 @@ function day1() {
         return reqFuel >= 0 ? this.fuelRequiredForMassRecursive(reqFuel, sum+reqFuel) : sum;
     }
 
-    this.allFuelRequired = function(inputFileName) {
-        var sum = 0;
-
-        // processInput_.processLineByLine();
-
-        // var lineReader = require('readline').createInterface({
-        //     input: require('fs').createReadStream('./inputs/day1-input.txt')
-        //   });
-          
-        // lineReader.on('line', function (line) {
-        //     //console.log(line);
-        //     sum += 1;//this.fuelRequiredForMass(line);
-        // });
-        // return sum;        
-        
-        // console.log(buf);
+    this.allFuelRequired = function(inputFileName, f) {
+        const input_lines = fs.readFileSync(inputFileName, 'utf8').toString().split("\n")
+        const sum = (input_lines) => input_lines.reduce( (acc, e) => acc + f.call(this, parseInt(e), 0), 0);
+        console.log(sum(input_lines));
     }
 
 }
 
-const execute = function () {
-    const day1_ = new day1();
-    const input_lines = fs.readFileSync('./inputs/day1-input.txt', 'utf8').toString().split("\n")
-    // const sum = (input_lines) => input_lines.reduce( (acc, e) => acc + parseInt(e), 0);
+const day1_ = new day1();
+day1_.allFuelRequired("./inputs/day1-input.txt", day1_.fuelRequiredForMass);
+day1_.allFuelRequired("./inputs/day1-input.txt", day1_.fuelRequiredForMassRecursive);
 
-    let sum = 0;
-    for(let line of input_lines) {
-        sum = sum + day1_.fuelRequiredForMassRecursive(line, 0); 
-    }
-    console.log(sum);
-}
-
-execute();
 
 module.exports = day1;
 // export default fuelForMass;

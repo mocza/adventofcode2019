@@ -13,34 +13,34 @@ const day1_ = new day1();
 // });
 
 
-describe('fuelRequiredForMass', function() {
+describe('fuelRequiredForMassPart1', function() {
     it('divisable by 3', function() {
-        assert.equal(day1_.fuelRequiredForMass(12), 2);
+        assert.equal(day1_.fuelRequiredForMassPart1(12), 2);
     }); 
     it('not divisable by 3', function() {
-        assert.equal(day1_.fuelRequiredForMass(14), 2);
+        assert.equal(day1_.fuelRequiredForMassPart1(14), 2);
     }); 
     it('not divisable by 3', function() {
-        assert.equal(day1_.fuelRequiredForMass(1969), 654);
+        assert.equal(day1_.fuelRequiredForMassPart1(1969), 654);
     }); 
     it('not divisable by 3', function() {
-        assert.equal(day1_.fuelRequiredForMass(100756), 33583);
+        assert.equal(day1_.fuelRequiredForMassPart1(100756), 33583);
     }); 
     
 });
 
-describe('fuelRequiredForMassRecursive', function() {
+describe('fuelRequiredForMassPart2', function() {
   it('divisable by 3', function() {
-      assert.equal(day1_.fuelRequiredForMassRecursive(12, 0),  2);
+      assert.equal(day1_.fuelRequiredForMassPart2(12, 0),  2);
   }); 
   it('not divisable by 3', function() {
-      assert.equal(day1_.fuelRequiredForMassRecursive(14, 0), 2);
+      assert.equal(day1_.fuelRequiredForMassPart2(14, 0), 2);
   }); 
   it('not divisable by 3', function() {
-      assert.equal(day1_.fuelRequiredForMassRecursive(1969, 0), 966);
+      assert.equal(day1_.fuelRequiredForMassPart2(1969, 0), 966);
   }); 
   it('not divisable by 3', function() {
-      assert.equal(day1_.fuelRequiredForMassRecursive(100756, 0), 50346);
+      assert.equal(day1_.fuelRequiredForMassPart2(100756, 0), 50346);
   }); 
   
 });

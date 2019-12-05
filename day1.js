@@ -18,7 +18,7 @@ function executor(inputFile, calcObj) {
 
     this.execute = function(name, calcFunction) {
         const fs = require('fs');
-        const input_lines = fs.readFileSync(inputFile, 'utf8').toString().split("\n")
+        const input_lines = fs.readFileSync(inputFile, 'utf8').toString().split("\n");
         const sum = (input_lines) => input_lines.reduce( (acc, elem) => acc + calcFunction.call(calcObj, parseInt(elem), 0), 0);
         console.log(`${name}: ${sum(input_lines)}`);
     }

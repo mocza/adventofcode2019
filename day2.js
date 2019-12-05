@@ -2,7 +2,33 @@
 
 function day2() {
 
-    this.runIntCode = function(input, pos) {
+    this.runIntCode = function(input) {
+        let step = 'opCode';
+        let opCode, op1Pos, op2Pos, resultPos;
+        for(let i = 0; i < input.length; i++) {
+            if(step === 'opCode') {
+                opCode = input[i];
+                if(opCode === 99) {
+                    break;
+                }
+                step = 'op1Pos';
+            } else if(step === 'op1Pos') {
+                op1Pos = input[i];
+                step = 'op2Pos';
+            } else if(step === 'op2Pos') {
+                op2Pos = input[i];
+                step = 'resultPos';
+            } else if(step === 'resultPos') {
+                resultPos = input[i];
+                const result = opCode === 1 ? input[op1Pos] + input[op2Pos] : input[op1Pos] * input[op2Pos];
+                input[resultPos] = result;
+                step = 'opCode';
+            }
+        }
+        return input;
+    }
+
+    this.runIntCodeRecursive = function(input, pos) {
         const opCode = input[pos];
         const op1 = input[input[pos+1]];
         const op2 = input[input[pos+2]];
@@ -30,7 +56,6 @@ function executor(inputFile, calcObj) {
     this.execute = function(name) {
         const fs = require('fs');
         const input_integers = fs.readFileSync(inputFile, 'utf8').toString().split(",");
-        // const sum = (input_lines) => input_lines.reduce( (acc, elem) => acc + calcFunction.call(calcObj, parseInt(elem), 0), 0);
         const input1202Adjusted = calcObj.restore1202ProgramAlarmState(input_integers);
         const intCodeResult = calcObj.runIntCode(input1202Adjusted, 0);
         console.log(`${name}: ${intCodeResult}`);

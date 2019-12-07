@@ -20,7 +20,16 @@ function day2() {
                 step = 'resultPos';
             } else if(step === 'resultPos') {
                 resultPos = input[i];
-                const result = opCode === 1 ? input[op1Pos] + input[op2Pos] : input[op1Pos] * input[op2Pos];
+                let result;
+                if(opCode === 1) {
+                    result = input[op1Pos] + input[op2Pos];
+                } else if (opCode === 2) {
+                    result = input[op1Pos] * input[op2Pos];
+                } else {
+                    console.log(`invalid opCode: ${opCode}`);
+                    break;
+                }
+                // const result = opCode === 1 ? input[op1Pos] + input[op2Pos] : input[op1Pos] * input[op2Pos];
                 input[resultPos] = result;
                 step = 'opCode';
             }
@@ -45,7 +54,7 @@ function day2() {
     }
 
     this.restore1202ProgramAlarmState = function(input) {
-        input[0] = 12;
+        input[1] = 12;
         input[2] = 2
         return input;
     }
@@ -55,7 +64,7 @@ function executor(inputFile, calcObj) {
 
     this.execute = function(name) {
         const fs = require('fs');
-        const input_integers = fs.readFileSync(inputFile, 'utf8').toString().split(",");
+        const input_integers = fs.readFileSync(inputFile, 'utf8').toString().split(",").map(s => parseInt(s));
         const input1202Adjusted = calcObj.restore1202ProgramAlarmState(input_integers);
         const intCodeResult = calcObj.runIntCode(input1202Adjusted, 0);
         console.log(`${name}: ${intCodeResult}`);

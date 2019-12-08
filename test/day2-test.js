@@ -18,7 +18,7 @@ describe('runIntCode', function() {
         assert.deepStrictEqual(day2Instance.runIntCode([1,1,1,4,99,5,6,0,99], 0), [30,1,1,4,2,5,6,0,99]);
     }); 
     it('multiply then add', function() {
-        assert.deepStrictEqual(day2Instance.runIntCode([1,1,1,4,99,5,6,0,99], 0), [30,1,1,4,2,5,6,0,99]);
+        assert.deepStrictEqual(day2Instance.runIntCode([2,1,1,4,99,5,6,0,99], 0), [11,1,1,4,1,5,6,0,99]);
     }); 
     
 });

@@ -23,12 +23,6 @@ describe('runIntCode', function() {
     
 });
 
-describe('restore1202ProgramAlarmState', function() {
-    it('success', function() {
-        assert.deepStrictEqual(day2Instance.restore1202ProgramAlarmState([1,0,0,0,99]), [1,12,2,0,99]);
-    }); 
-    
-});
 
 
 

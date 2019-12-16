@@ -12,13 +12,16 @@
         "Atomics": "readonly",
         "SharedArrayBuffer": "readonly"
     },
-    "parser": "@typescript-eslint/parser",
+    // "parser": "@typescript-eslint/parser",
+    "parser": "esprima",
     "parserOptions": {
         "ecmaVersion": 2018
     },
-    "plugins": [
-        "@typescript-eslint"
-    ],
+    // "plugins": [
+    //     "@typescript-eslint"
+    // ],
     "rules": {
+        "require-jsdoc" : ["off", "always"],
+        "indent" : ["off", "always"]
     }
 }

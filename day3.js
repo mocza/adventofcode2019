@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 class Line {
     constructor(coordBegin, coordEnd) {
@@ -26,12 +26,12 @@ class Coord2 {
     constructor(x, y) {
         this.x = x;
         this.y = y;
-    }    
+    }
 }
 
 function intRange(start, end) {
     let result = [];
-    if(end > start) {
+    if (end > start) {
         for (let i = start; i <= end; i++) {
             result.push(i);
         }
@@ -44,7 +44,7 @@ function intRange(start, end) {
 }
 
 function coordRange(coordBegin, coordEnd) {
-    if(coordBegin.x === coordEnd.x) {
+    if (coordBegin.x === coordEnd.x) {
         return intRange(coordBegin.y, coordEnd.y).map(nextY => new Coord2(coordBegin.x, nextY));
     } else {
         return intRange(coordBegin.x, coordEnd.x).map(nextX => new Coord2(nextX, coordBegin.y));
@@ -78,7 +78,6 @@ function intersections(lines1, lines2) {
 //     //     const [x, y] = this;
 //     //     return this.y;
 //     // }
-    
 // }
 
 function movesToCoordinates(moves, initialCoord) {
@@ -121,7 +120,7 @@ function readInput(inputFile) {
 }
 
 function readInputSync(inputFile) {
-    const fs = require('fs');    
+    const fs = require('fs');
     const inputLines = fs.readFileSync(inputFile, 'utf8').toString().split("\n");
     return [inputLines[0].toString().split(','), inputLines[1].toString().split(',')];
 }

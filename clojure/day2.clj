@@ -1,16 +1,9 @@
 ;part 1
-(defn exec-instruction [input] 
-    (let [operation (if (= (first input) 1) + *)
-      first-operand (get input (first (next input)))
-      second-operand (get input (first (next (next input))))
-      result (operation first-operand second-operand)
-      result-pos (first (next (next (next input)))) 
-      before-sub (subvec input 0 result-pos)
-      after-sub (subvec input (inc result-pos))] 
-      (into (conj before-sub result) after-sub) )
-    )
+(defn read-input [filename delimiter str-converter]
+  (map str-converter (clojure.string/split (slurp filename) delimiter)))
 
-(defn exec-instruction2 [input, pos] 
+(defn exec-instruction "Executes a single 4 element intcode instruction consisting of operation code, 2 operand indeces and result index" 
+  [input, pos] 
       (let [instruction (subvec input pos (+ pos 4))
         operation (if (= (first instruction) 1) + *)
         first-operand (get input (first (next instruction)))
@@ -20,31 +13,29 @@
         before-sub (subvec input 0 result-pos)
         after-sub (subvec input (inc result-pos))] 
         (into (conj before-sub result) after-sub) )
-      )
+    )
       
-
-(defn exec-program [input]
-  ( (exec-instruction input))
-  )  
-
-
-(exec-instruction2 [1,0,0,0,99] 0)
-
-(exec-instruction2 [2,3,0,3,99] 0)
-
-(exec-instruction2 [2,4,4,5,99,0] 0)
-
-(exec-instruction2 [1,1,1,4,99,5,6,0,99] 0)
-
-(exec-instruction2 [1,1,1,4,2,5,6,0,99] 4)
-
-(println "Hello")
-
-(inc 1 2)
-
-(let [operation (if (= (first input) 1) + *)
-  indeces (conj [] (get input (first (next input))) (get input (first (next input))) )
-  indeces2 (conj [] (get input (first (next input))) (get input (first (next input))) )
-]
-  indeces2
+(defn exec-program "Executes a program of intcode instructions till halt opcode" 
+  [input pos]
+  (if (= (get input pos) 99) 
+    input
+    (recur (exec-instruction input pos) (+ pos 4)))
 )
+
+(def input (vec (read-input "/media/mocha/massData1/dev/adventOfCode2019/inputs/day2-input.txt" #"," #(Integer. %))))
+
+;test
+(exec-instruction [1,0,0,0,99] 0)
+
+(exec-instruction [2,3,0,3,99] 0)
+
+(exec-instruction [2,4,4,5,99,0] 0)
+
+(exec-instruction [1,1,1,4,99,5,6,0,99] 0)
+
+(exec-instruction [1,1,1,4,2,5,6,0,99] 4)
+
+(exec-program [1,1,1,4,99,5,6,0,99] 0)
+
+(exec-program input 0)
+

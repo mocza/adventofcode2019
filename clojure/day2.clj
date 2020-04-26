@@ -25,6 +25,21 @@
 (def input (vec (read-input "/media/mocha/massData1/dev/adventOfCode2019/inputs/day2-input.txt" #"," #(Integer. %))))
 
 ;test
+(use 'clojure.test)
+(use 'clojure.test.junit)
+
+(deftest exec-instruction
+  (is (= [2,0,0,0,99] (exec-instruction [1,0,0,0,99] 0)))
+  )
+
+(deftest abc
+  (is (= 5 (+ 2 2)))
+  )
+
+(with-junit-output
+  (run-tests 'user)
+)
+
 (exec-instruction [1,0,0,0,99] 0)
 
 (exec-instruction [2,3,0,3,99] 0)

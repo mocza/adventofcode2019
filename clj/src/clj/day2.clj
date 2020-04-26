@@ -28,12 +28,26 @@
 (use 'clojure.test)
 (use 'clojure.test.junit)
 
-(deftest exec-instruction
-  (is (= [2,0,0,0,99] (exec-instruction [1,0,0,0,99] 0)))
+(deftest test-exec-instruction  
+  (testing "single instruction"
+    (testing "addition"
+      (is (= [2,0,0,0,99] (exec-instruction [1,0,0,0,99] 0))))
+    (testing "multiplication"
+      (is (= [2,3,0,6,99] (exec-instruction [2,3,0,3,99] 0)) "write result inside instruction index")
+      (is (= [2,4,4,5,99,9801] (exec-instruction [2,4,4,5,99,0] 0)) "write result after instruction index")
+      )
+    )
+  (testing "two instructions"
+    (testing "addition"
+      (is (= [1,1,1,4,2,5,6,0,99] (exec-instruction [1,1,1,4,99,5,6,0,99] 0)))
+      (is (= [30,1,1,4,2,5,6,0,99] (exec-instruction [1,1,1,4,2,5,6,0,99] 4)))
+      )
+      )
   )
 
-(deftest abc
-  (is (= 5 (+ 2 2)))
+(deftest test-exec-program
+  (is (= [30,1,1,4,2,5,6,0,99] (exec-program [1,1,1,4,99,5,6,0,99] 0)))
+  (is (= 12490719 (first (exec-program input 0))))
   )
 
 (with-junit-output

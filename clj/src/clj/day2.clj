@@ -2,7 +2,7 @@
 (use 'clojure.test.junit)
 
 ;part 1
-(defn read-input [filename delimiter str-converter]
+(defn read-input "Reads input from file" [filename delimiter str-converter]
   (map str-converter (clojure.string/split (slurp filename) delimiter)))
 
 (defn exec-instruction "Executes a single 4 element intcode instruction consisting of operation code, 2 operand indeces and result index" 
@@ -27,7 +27,7 @@
 
 (def input (vec (read-input "/media/mocha/massData1/dev/adventOfCode2019/inputs/day2-input.txt" #"," #(Integer. %))))
 
-(defn reset-input [noun verb]
+(defn reset-input "Resets the 2 operands of the first intcode instruction of input" [noun verb]
   (into (conj (subvec input 0 1) noun verb) (subvec input 3))
   )
 
@@ -58,7 +58,7 @@
 ;part2
 (require '[clojure.math.combinatorics :as combo])
 
-(defn solver [intcode-program-output]
+(defn what-input-generates-this-output [intcode-program-output]
   (let [formatter #(format "%02d%02d" (first %) (first (next %)))
         result (get (first (filter
                             #(= intcode-program-output (first %))
@@ -69,8 +69,8 @@
     (formatter result))
   )
 
-(deftest test-solver
-  (is (= "2003" (solver 19690720)))
+(deftest test-what-input-generates-this-output
+  (is (= "2003" (what-input-generates-this-output 19690720)))
   )
 
 (with-junit-output

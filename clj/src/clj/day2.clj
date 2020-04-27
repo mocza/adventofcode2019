@@ -1,3 +1,6 @@
+(use 'clojure.test)
+(use 'clojure.test.junit)
+
 ;part 1
 (defn read-input [filename delimiter str-converter]
   (map str-converter (clojure.string/split (slurp filename) delimiter)))
@@ -27,10 +30,6 @@
 (defn reset-input [noun verb]
   (into (conj (subvec input 0 1) noun verb) (subvec input 3))
   )
-
-;test
-(use 'clojure.test)
-(use 'clojure.test.junit)
 
 (deftest test-exec-instruction  
   (testing "single instruction"
@@ -73,7 +72,6 @@
 (deftest test-solver
   (is (= "2003" (solver 19690720)))
   )
-
 
 (with-junit-output
   (run-tests 'user))

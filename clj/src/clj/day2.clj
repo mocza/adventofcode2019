@@ -24,8 +24,8 @@
 
 (def input (vec (read-input "/media/mocha/massData1/dev/adventOfCode2019/inputs/day2-input.txt" #"," #(Integer. %))))
 
-(def input-1202 
-  (into (conj (subvec input 0 1) 12 2) (subvec input 3))
+(defn reset-input [noun verb]
+  (into (conj (subvec input 0 1) noun verb) (subvec input 3))
   )
 
 ;test
@@ -53,10 +53,28 @@
 (deftest test-exec-program
   (is (= [30,1,1,4,2,5,6,0,99] (exec-program [1,1,1,4,99,5,6,0,99] 0)) "add then multiply")
   (is (= [11,1,1,4,1,5,6,0,99] (exec-program [2,1,1,4,99,5,6,0,99] 0)) "multiply then add")
-  (is (= 12490719 (first (exec-program input-1202 0))) "sample input")
+  (is (= 12490719 (first (exec-program (reset-input 12 2) 0))) "sample input")
   )
 
+;part2
+(require '[clojure.math.combinatorics :as combo])
+
+(defn solver [intcode-program-output]
+  (let [formatter #(format "%02d%02d" (first %) (first (next %)))
+        result (get (first (filter
+                            #(= intcode-program-output (first %))
+                            (map
+                             #(let [noun (first %) verb (first (rest %))]
+                                (vector (first (exec-program (reset-input noun verb) 0)) [noun verb]))
+                             (combo/permuted-combinations (range 0 100) 2)))) 1)] 
+    (formatter result))
+  )
+
+(deftest test-solver
+  (is (= "2003" (solver 19690720)))
+  )
+
+
 (with-junit-output
-  (run-tests 'user)
-)
+  (run-tests 'user))
 

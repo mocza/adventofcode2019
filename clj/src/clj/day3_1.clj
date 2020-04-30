@@ -8,36 +8,34 @@
 
 (with-test
   (defn direction-to-coordinates [from move-to]
-    (let [move-to-direction (str (first (take 1 (first move-to))))
-          move-to-length (Integer. (apply str  (drop 1 (first move-to))))
-          ;coord-list #(map #(list) (range %1 %2))
+    (let [move-to-direction (str (first (take 1  move-to)))
+          move-to-length (Integer. (apply str (drop 1 move-to)))
           [x y] from
-          [step start end f] ({"R" [1 (inc x) (inc move-to-length) #(list % y)] "U" [1 (inc y) (inc move-to-length) #(list x %)] "D" [-1 (dec y) (- move-to-length) #(list x %)] "L" [-1 (dec x) (- move-to-length) #(list % y)]} move-to-direction)
+          [step start end f] ({"R" [1 (inc x) (inc move-to-length) #(list % y)] "U" [1 (inc y) (inc (+ x move-to-length)) #(list x %)] "D" [-1 (dec y) (dec (- y move-to-length)) #(list x %)] "L" [-1 (dec x) (dec (- x move-to-length)) #(list % y)]} move-to-direction)
           ]
       (do
         (println (format "move-to-direction: %s, move-to-length: %s, start: %s, end: %s, step: %s" move-to-direction move-to-length start end step))
         (map f (range start end step))
-        ;(if (= "R" move-to-direction) (list (list (inc (first from)) (first (next from)))))
         )))
-  (is (= '((1, 0)) (direction-to-coordinates '(0, 0) '("R1"))) "go to right one step")
-  (is (= '((1, 0) (2, 0) (3, 0) (4, 0) (5, 0) (6, 0) (7, 0) (8, 0) (9, 0) (10, 0)) (direction-to-coordinates '(0, 0) '("R10"))) "go to right 10 steps")
-  (is (= '((0, 0)) (direction-to-coordinates '(1, 0) '("L1"))) "go left one step")
-  (is (= '((0, 1)) (direction-to-coordinates '(0, 0) '("U1"))) "go up one step")
-  (is (= '((0, 0)) (direction-to-coordinates '(0, 1) '("D1"))) "go down one step")
+  (is (= '((1, 0)) (direction-to-coordinates '(0, 0) "R1")) "go to right one step")
+  (is (= '((0, 0)) (direction-to-coordinates '(1, 0) "L1")) "go left one step")
+  (is (= '((0, 1)) (direction-to-coordinates '(0, 0) "U1")) "go up one step")
+  (is (= '((0, 0)) (direction-to-coordinates '(0, 1) "D1")) "go down one step")
+  (is (= '((1, 0) (2, 0) (3, 0) (4, 0) (5, 0) (6, 0) (7, 0) (8, 0) (9, 0) (10, 0)) (direction-to-coordinates '(0, 0) "R10")) "go to right 10 steps")
+  (is (= '((9, 10) (8, 10) (7, 10)) (direction-to-coordinates '(10, 10) "L3")) "go to left 3 steps")
+  (is (= (for [y (range 11 22)] (list 10 y)) (direction-to-coordinates '(10, 10) "U11")) "go up 11 steps")
+  (is (= '((32,55) (32,54) (32,53) (32,52) (32,51) (32,50) (32,49) (32,48) (32,47)) (direction-to-coordinates '(32, 56) "D9")) "go down 9 steps")
   )
 
-(with-junit-output
-  (run-tests 'day3-1))
-
-;(direction-to-coordinates '(0, 0) '("R1"))
-
-
-;; (with-test
-;;   (defn to-coord [start directions] 
-;;     (map #(if (= "R" (take 1 %) ) directions)
-;;     )
-;;   (is (= '((0,0) (1,0)) (to-coord '(0,0) '("R1"))))
-;;   )
+(with-test
+  (defn directions-to-coordinates [from moves acc]
+    (if (empty? moves) acc
+        (recur (first (cons from (direction-to-coordinates from (first moves)))) (rest moves) (cons from (direction-to-coordinates from (first moves))))
+        ;; recur (first (cons from (direction-to-coordinates from (first moves)))) (rest moves) )
+        )
+    )
+  (is (= '((0,0) (1,0) (1,1)) (directions-to-coordinates '(0,0) '("R1" "U1") '())))
+  )
 
 (with-test
    (defn closest-intersection [central-port, wire1, wire2]

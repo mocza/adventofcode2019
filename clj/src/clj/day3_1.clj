@@ -92,4 +92,4 @@
 (require '[clojure.string :as str])
 (defn input-directions [line-number] (cons '(1,1) (list (str/split (input line-number) #","))))
 
-(closest-intersection '(1,1) (input-directions 0) ()input-directions 1
+(closest-intersection '(1,1) (input-directions 0) (input-directions 1))

@@ -42,21 +42,44 @@
   (is (= '((0,0) (1,0) (2,0) (2,1)) (directions-to-coordinates '(0,0) '("R2" "U1"))))
   )
 
-(with-junit-output
-  (clojure.test/test-vars [#'day3-1/directions-to-coordinates]))
-
+(with-test
+  (defn intersections [line1 line2] "Returns the points where two lines crosses except the start point if both lines start from same point"
+    (let [line1-start (first line1) line1-directions (second line1)
+          line2-start (first line2) line2-directions (second line2)
+          has-same-start? (= line1-start line2-start)
+          line1-points (for [point (directions-to-coordinates line1-start line1-directions) :when (and has-same-start? (not (= point line1-start)))] point)
+          line2-points (for [point (directions-to-coordinates line2-start line2-directions) :when (and has-same-start? (not (= point line2-start)))] point)]
+      (do 
+        ;(print (format "line1-points: %s, line2-points: %s" line1-points line2-points))
+        (for [line1-point line1-points line2-point line2-points :when (= line1-point line2-point)] line1-point)      
+        )
+      )
+    )
+  (is (= '((1,0)) (intersections '((0,0) ("R1")) '((0,0) ("R1"))) )) 
+  (is (= '((7,6) (4,4)) (intersections '((1,1) ("R8","U5","L5","D3")) '((1,1) ("U7","R6","D4","L4")))))
+  )
 
 (with-test
-   (defn closest-intersection [central-port, wire1, wire2]
-     ;(let [wire1-coords (take 1 (first wire1))] ())
-     (Integer. 3)
+  (defn manhattan-distance [point1 point2] 
+    (let [[x1 y1] point1 [x2 y2] point2] (+ (java.lang.Math/abs (- x2 x1)) (java.lang.Math/abs (- y2 y1))))
+    )
+  (is (= 1 (manhattan-distance '(0,0) '(1,0))))
+  (is (= 6 (manhattan-distance '(1,1) '(4,4))))
+  )
+
+(with-test
+   (defn closest-intersection [from line1 line2]
+     (let [cross-points (intersections line1 line2)
+           cross-point-distances (map #(manhattan-distance from %) cross-points)] 
+       (apply min cross-point-distances)
+       )
      )
-   (is (= 1 (closest-intersection '(0, 0) '("R1") '("R1"))))  
-  ;(is (= 3 (closest-intersection (1, 1) ("R8","U5","L5","D3") ("U7","R6","D4","L4"))))  
+   (is (= 6 (closest-intersection '(1,1) '((1,1) ("R8","U5","L5","D3")) '((1,1) ("U7","R6","D4","L4")))))  
    )
 
+(with-junit-output
+  (clojure.test/test-vars [#'day3-1/manhattan-distance]))
 
 (with-junit-output
     (run-tests 'day3-1))
 
-;(closest-intersection '(1, 1) '("R8","U5","L5","D3") '("U7","R6","D4","L4")) 

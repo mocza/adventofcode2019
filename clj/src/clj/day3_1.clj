@@ -2,8 +2,6 @@
 (use 'clojure.test)
 (use 'clojure.test.junit)
 
-;(ns-unmap 'day3-1 'to-coordinates)
-
 (defn collection-type [col] (let [listObject (type list)] {"class clojure.lang.PersistentList" :list} (str (type col))))
 
 (with-test
@@ -68,14 +66,16 @@
   )
 
 (with-test
-   (defn closest-intersection [from line1 line2]
-     (let [cross-points (intersections line1 line2)
-           cross-point-distances (map #(manhattan-distance from %) cross-points)] 
-       (apply min cross-point-distances)
-       )
-     )
-   (is (= 6 (closest-intersection '(1,1) '((1,1) ("R8","U5","L5","D3")) '((1,1) ("U7","R6","D4","L4")))))  
-   )
+  (defn closest-intersection [from line1 line2]
+    (let [cross-points (intersections line1 line2)
+          cross-point-distances (map #(manhattan-distance from %) cross-points)] 
+      (apply min cross-point-distances)
+      )
+    )
+  (is (= 6 (closest-intersection '(1,1) '((1,1) ("R8","U5","L5","D3")) '((1,1) ("U7","R6","D4","L4")))))  
+  (is (= 159 (closest-intersection '(1,1) '((1,1) ("R75","D30","R83","U83","L12","D49","R71","U7","L72")) '((1,1) ("U62","R66","U55","R34","D71","R55","D58","R83")))))
+  (is (= 135 (closest-intersection '(1,1) '((1,1) ("R98","U47","R26","D63","R33","U87","L62","D20","R33","U53","R51")) '((1,1) ("U98","R91","D20","R16","D67","R40","U7","R15","U6","R7")))))
+  )
 
 (with-junit-output
   (clojure.test/test-vars [#'day3-1/manhattan-distance]))
@@ -83,3 +83,13 @@
 (with-junit-output
     (run-tests 'day3-1))
 
+
+(defn read-input "Reads input from file" [filename delimiter str-converter]
+  (map str-converter (clojure.string/split (slurp filename) delimiter)))
+
+(def input (vec (read-input "/mnt/massData/dev/adventOfCode2019/inputs/day3-input.txt" #"\n" identity)))
+
+(require '[clojure.string :as str])
+(defn input-directions [line-number] (cons '(1,1) (list (str/split (input line-number) #","))))
+
+(closest-intersection '(1,1) (input-directions 0) ()input-directions 1

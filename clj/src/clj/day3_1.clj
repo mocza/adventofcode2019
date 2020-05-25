@@ -74,9 +74,6 @@
   (is (= [[0 0] [2 0] [2 1]] (directions-to-endpoints [0 0] ["R2" "U1"])))
  )  
 
-(with-junit-output
-  (clojure.test/test-vars [#'day3-1/directions-to-endpoints]))
-
 (with-test
   (defn intersections "Returns the points where two lines crosses except the start point if both lines start from same point" 
     [line1 line2] 
@@ -173,9 +170,6 @@
   (is (= false (point-on-line? [2 2] [[0 1] [2 1]])))
   )
 
-(with-junit-output
-  (clojure.test/test-vars [#'day3-1/point-on-line?]))
-
 (with-test 
   (defn horizontal-vertical-intersection [line1 line2]
     (let [[[line1-x1 line1-y1] [line1-x2 line1-y2]] line1 [[line2-x1 line2-y1] [line2-x2 line2-y2]] line2
@@ -187,9 +181,6 @@
   (is (= [[2 1]] (horizontal-vertical-intersection [[0 1] [2 1]] [[2 2] [2 0]])))
   (is (= [] (horizontal-vertical-intersection [[1 1] [9 1]] [[7 8] [7 4]])) "no intersection")  
   )
-
-(with-junit-output
-  (clojure.test/test-vars [#'day3-1/horizontal-vertical-intersection]))
 
 (with-test 
   (defn horizontal-intersections [line1 line2]
@@ -233,9 +224,6 @@
   (is (= [] (line-intersections [[3 2] [3 0]] [[4 2] [4 0]])) "two vertical lines does not intersect")
   )
 
-(with-junit-output
-  (clojure.test/test-vars [#'day3-1/line-intersections]))
-
 (with-test
   (defn intersections2 "Returns the points where two lines crosses except the start point if both lines start from same point"
     [line1 line2]
@@ -245,14 +233,16 @@
           lines1 (for [point (directions-to-endpoints line1-start line1-directions)] point)
           lines2 (for [point (directions-to-endpoints line2-start line2-directions)] point)]      
           (apply concat (for [line1 (partition 2 1 lines1) line2 (partition 2 1 lines2)] (line-intersections line1 line2))))
+    )
   (is (= [[0 0] [1 0]] (intersections2 [[0 0] ["R1"]] [[0 0] ["R1"]])) "identical lines intersect at each point")
   (is (= [[2 1]] (intersections2 [[0 1] ["R2"]] [[2 2] ["D2"]])) "horizontal and vertical lines intersect at single point")
   (is (= [[2 1]] (intersections2 [[0 1] ["R2"]] [[2 2] ["D2" "R5"]])) "horizontal and vertical lines intersect at single point")
-  (is (= [[7 6] [4 4]] (intersections2 [[1 1] ["R8" "U5" "L5" "D3"]] [[1 1] ["U7" "R6" "D4" "L4"]])) "same start point ignored from intersections")))
+  (is (= [[1 1] [7 6] [4 4]] (intersections2 [[1 1] ["R8" "U5" "L5" "D3"]] [[1 1] ["U7" "R6" "D4" "L4"]])) "same start point ignored from intersections")
+)
 
-(def need-filter? true)
+;; (def need-filter? true)
 
-(filter #(if (need-filter?) (if (not (= % [0 0])) true false) false) (apply concat (for [point1 [[0 0]] point2 [[1 1]]] [point1 point2])))
+;; (filter #(if (need-filter?) (if (not (= % [0 0])) true false) false) (apply concat (for [point1 [[0 0]] point2 [[1 1]]] [point1 point2])))
 
 (with-junit-output
   (clojure.test/test-vars [#'day3-1/intersections2]))
@@ -268,22 +258,22 @@
 
 (with-test
   (defn closest-intersection [from line1 line2]
-    (let [cross-points (intersections2 line1 line2)
+    (let [cross-points (filter #(not (= from %)) (intersections2 line1 line2))
           cross-point-distances (map #(manhattan-distance from %) cross-points)] 
       (apply min cross-point-distances)
       )
     )
-  (is (= 6 (closest-intersection '(1,1) '((1,1) ("R8","U5","L5","D3")) '((1,1) ("U7","R6","D4","L4")))))  
+  (is (= 6 (closest-intersection [1 1] [[1 1] ["R8" "U5" "L5" "D3"]] [[1 1] ["U7","R6","D4","L4"]])))
   (is (= 159 (closest-intersection '(1,1) '((1,1) ("R75","D30","R83","U83","L12","D49","R71","U7","L72")) '((1,1) ("U62","R66","U55","R34","D71","R55","D58","R83")))))
   (is (= 135 (closest-intersection '(1,1) '((1,1) ("R98","U47","R26","D63","R33","U87","L62","D20","R33","U53","R51")) '((1,1) ("U98","R91","D20","R16","D67","R40","U7","R15","U6","R7")))))
-  )
-
-(with-junit-output
-  (clojure.test/test-vars [#'day3-1/closest-intersection]))
-
+)  
 
 (with-junit-output
   (clojure.test/test-vars [#'day3-1/manhattan-distance]))
+
+
+(with-junit-output
+  (clojure.test/test-vars [#'day3-1/closest-intersection]))
 
 (with-junit-output
     (run-tests 'day3-1))
